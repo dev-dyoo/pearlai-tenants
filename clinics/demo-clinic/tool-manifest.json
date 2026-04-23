@@ -1,0 +1,81 @@
+{
+  "tools": [
+    {
+      "name": "get_providers",
+      "capability": "providers.list",
+      "description": "List providers at the clinic.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "npi": { "type": "string" }
+        }
+      },
+      "adapterRef": "nexhealth@0.0.1",
+      "version": "0.1.0",
+      "enabled": true
+    },
+    {
+      "name": "get_patients_by_phone_and_dob",
+      "capability": "patients.search",
+      "description": "Look up a patient by phone number and date of birth.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["phone", "dob"],
+        "additionalProperties": false,
+        "properties": {
+          "phone": { "type": "string" },
+          "dob": { "type": "string", "format": "date" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" }
+        }
+      },
+      "adapterRef": "nexhealth@0.0.1",
+      "version": "0.1.0",
+      "enabled": true
+    },
+    {
+      "name": "get_available_slots",
+      "capability": "slots.list",
+      "description": "Find available appointment slots in a date range.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["providerIds", "appointmentTypeId", "dateRange"],
+        "additionalProperties": false,
+        "properties": {
+          "providerIds": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "appointmentTypeId": { "type": "string" },
+          "dateRange": {
+            "type": "object",
+            "required": ["from", "to"],
+            "additionalProperties": false,
+            "properties": {
+              "from": { "type": "string", "format": "date" },
+              "to": { "type": "string", "format": "date" }
+            }
+          }
+        }
+      },
+      "adapterRef": "nexhealth@0.0.1",
+      "version": "0.1.0",
+      "enabled": true
+    },
+    {
+      "name": "book_appointment",
+      "capability": "appointments.create",
+      "description": "Book an appointment for an existing patient.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["patientId", "slot"],
+        "additionalProperties": false,
+        "properties": {
+          "patientId": { "type": "string" },
+          "slot": { "type": "object" }
+        }
+      },
+      "adapterRef": "nexhealth@0.0.1",
+      "version": "0.1.0",
+      "enabled": true
+    }
+  ]
+}

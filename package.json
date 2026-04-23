@@ -1,0 +1,31 @@
+{
+  "name": "pearlai-tenants",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Per-clinic bundles for Pearl AI — git source of truth, DynamoDB runtime artifact.",
+  "scripts": {
+    "validate": "tsx scripts/validate-bundle.ts",
+    "lint:prompt": "tsx scripts/lint-prompt.ts",
+    "compile": "tsx scripts/compile-bundle.ts",
+    "publish": "tsx scripts/publish-bundle.ts",
+    "diff": "tsx scripts/diff-bundle.ts",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.670.0",
+    "@aws-sdk/util-dynamodb": "^3.670.0",
+    "@types/node": "^22.9.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "remark": "^15.0.1",
+    "remark-parse": "^11.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "unified": "^11.0.5",
+    "vitest": "^2.1.5",
+    "yaml": "^2.6.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

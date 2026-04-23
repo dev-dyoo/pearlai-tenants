@@ -1,0 +1,28 @@
+name: publish
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::PLACEHOLDER:role/pearlai-tenants-publisher
+          aws-region: us-west-2
+      - run: npm run validate
+      - run: npm run lint:prompt
+      - run: npm run publish

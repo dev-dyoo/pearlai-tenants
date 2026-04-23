@@ -1,0 +1,13 @@
+# CODEOWNERS — pearlai-tenants
+# Personal repo; no teams yet. Use individual @dev-dyoo for all paths.
+# When org + teams exist, swap to:
+#   clinics/**  @pearl-ops @senior-eng
+#   schemas/**  @pearl-eng
+#   scripts/**  @pearl-eng
+# Tracked in product issue #44 (launch-gate controls flip).
+
+*                 @dev-dyoo
+clinics/**        @dev-dyoo
+schemas/**        @dev-dyoo
+scripts/**        @dev-dyoo
+.github/**        @dev-dyoo

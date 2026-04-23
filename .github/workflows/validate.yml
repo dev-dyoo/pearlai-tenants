@@ -1,0 +1,38 @@
+name: validate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install
+        run: npm ci
+
+      - name: Validate schemas
+        run: npm run validate
+        continue-on-error: true
+
+      - name: Prompt lint
+        run: npm run lint:prompt
+        continue-on-error: true
+
+      - name: Compile dry-run
+        run: npm run compile -- --dry-run
+        continue-on-error: true
+
+      - name: Diff comment
+        run: npm run diff
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true

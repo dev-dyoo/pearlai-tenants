@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pearl.ai/schemas/bundle.schema.json",
+  "title": "ClinicBundle",
+  "type": "object",
+  "required": ["schemaVersion", "version", "activeIntegrations"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0" },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "activeIntegrations": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["boolean", "string", "number"]
+      }
+    },
+    "opsContacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "email"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" }
+        }
+      }
+    }
+  }
+}

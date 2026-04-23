@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pearl.ai/schemas/config.schema.json",
+  "title": "ClinicConfig",
+  "description": "Per-adapter clinic config. Keys are adapter names; values validated against each adapter's schema at publish time.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object"
+  }
+}

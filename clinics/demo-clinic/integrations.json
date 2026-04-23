@@ -1,0 +1,12 @@
+[
+  {
+    "integration": "nexhealth",
+    "mode": "active",
+    "events": []
+  },
+  {
+    "integration": "nexhealth",
+    "mode": "webhook",
+    "events": ["appointment.inserted", "appointment.updated", "appointment.cancelled"]
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pearl.ai/schemas/tool-manifest.schema.json",
+  "title": "ToolManifest",
+  "type": "object",
+  "required": ["tools"],
+  "additionalProperties": false,
+  "properties": {
+    "tools": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ToolDefinition" },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "ToolDefinition": {
+      "type": "object",
+      "required": ["name", "capability", "inputSchema", "adapterRef", "version"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "capability": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9]*\\.[a-z][a-zA-Z0-9]*$" },
+        "description": { "type": "string" },
+        "inputSchema": { "type": "object" },
+        "outputSchema": { "type": "object" },
+        "adapterRef": { "type": "string", "pattern": "^[a-z][a-z0-9-]*@\\d+\\.\\d+\\.\\d+$" },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "enabled": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}

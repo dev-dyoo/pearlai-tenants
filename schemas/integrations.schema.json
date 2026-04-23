@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pearl.ai/schemas/integrations.schema.json",
+  "title": "IntegrationsDeclaration",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["integration", "mode"],
+    "additionalProperties": false,
+    "properties": {
+      "integration": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+      "mode": { "type": "string", "enum": ["active", "webhook", "polling"] },
+      "events": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "cadenceSec": {
+        "type": "integer",
+        "minimum": 30,
+        "description": "Polling mode only. Default depends on adapter."
+      }
+    }
+  }
+}

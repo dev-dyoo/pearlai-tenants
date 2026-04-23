@@ -1,0 +1,10 @@
+schemaVersion: "1.0"
+version: "0.1.0"
+activeIntegrations:
+  - nexhealth
+features:
+  requireBalanceCheck: false
+  autoConfirmWithinHours: 24
+opsContacts:
+  - name: Demo Owner
+    email: demo-owner@example.com

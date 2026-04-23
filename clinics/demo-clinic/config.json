@@ -1,0 +1,14 @@
+{
+  "nexhealth": {
+    "subdomain": "DEMO_PLACEHOLDER",
+    "locationId": "DEMO_LOCATION_ID",
+    "defaultProviderIds": [],
+    "appointmentTypeMap": {
+      "recall": 0,
+      "new-patient": 0
+    },
+    "features": {
+      "requireBalanceCheck": false
+    }
+  }
+}
