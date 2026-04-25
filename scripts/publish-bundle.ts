@@ -1,11 +1,57 @@
-// publish-bundle.ts — Stub. Full implementation under product issue #33 (W3-6).
-// Per w3-tenants-repo-ci.md:
-//   - Compiles bundle via compile-bundle.ts
-//   - DynamoDB PutItem into pearlai-tenants with conditional history append (keep last 20)
-//   - --promote-canary <clinicId>: swap canary* → active fields, clear canary fields
-//   - --pin <clinicId> <sha>: reconstruct row for a historical sha, overwrite active
+// publish-bundle.ts — compile + PutItem to pearlai-tenants DDB table.
+// MVP scope: no canary, no history append, no --pin. Just publish the current
+// state of clinics/<id>/* to the DDB row.
 //
-// Runs from GitHub Actions publish.yml via OIDC role pearlai-tenants-publisher.
+// Usage:
+//   tsx scripts/publish-bundle.ts <clinicId>
+//
+// Env:
+//   PEARLAI_TENANTS_TABLE   (default: pearlai-tenants-dev)
+//   AWS_REGION              (default: us-west-2)
+//   AWS_PROFILE / standard AWS creds chain
 
-console.error("publish-bundle.ts — not yet implemented. See pearlai-product/platform/w3-tenants-repo-ci.md (W3-6).");
-process.exit(2);
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { PutCommand } from "@aws-sdk/lib-dynamodb";
+
+import { compileBundle, checkSize } from "./compile-bundle.js";
+
+async function main(): Promise<void> {
+  const clinicId = process.argv[2];
+  if (!clinicId) {
+    console.error("usage: tsx scripts/publish-bundle.ts <clinicId>");
+    process.exit(2);
+  }
+
+  const tableName = process.env["PEARLAI_TENANTS_TABLE"] ?? "pearlai-tenants-dev";
+  const region = process.env["AWS_REGION"] ?? "us-west-2";
+
+  const publishedBy =
+    process.env["GITHUB_ACTOR"] ?? process.env["USER"] ?? "local";
+  const row = compileBundle(clinicId, publishedBy);
+  const bytes = checkSize(row);
+
+  const ddb = new DynamoDBClient({ region });
+  const { DynamoDBDocumentClient } = await import("@aws-sdk/lib-dynamodb");
+  const doc = DynamoDBDocumentClient.from(ddb);
+
+  await doc.send(
+    new PutCommand({
+      TableName: tableName,
+      Item: row,
+    }),
+  );
+
+  console.error(
+    `published: ${clinicId} sha=${row.bundleSha.slice(0, 12)} bytes=${bytes} → ${tableName}`,
+  );
+}
+
+if (fileURLToPath(import.meta.url) === resolve(process.argv[1] ?? "")) {
+  void main().catch((err) => {
+    console.error("publish failed:", err instanceof Error ? err.message : err);
+    process.exit(1);
+  });
+}
