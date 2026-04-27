@@ -21,7 +21,7 @@ jobs:
       - run: npm ci
       - uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::PLACEHOLDER:role/pearlai-tenants-publisher
+          role-to-assume: arn:aws:iam::259743166915:role/pearlai-tenants-publisher
           aws-region: us-west-2
       - run: npm run validate
       - run: npm run lint:prompt
