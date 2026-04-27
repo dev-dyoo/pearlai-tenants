@@ -25,4 +25,9 @@ jobs:
           aws-region: us-west-2
       - run: npm run validate
       - run: npm run lint:prompt
-      - run: npm run publish
+      - name: Publish all clinic bundles
+        run: |
+          for d in clinics/*/; do
+            clinicId=$(basename "$d")
+            npm run publish -- "$clinicId"
+          done
